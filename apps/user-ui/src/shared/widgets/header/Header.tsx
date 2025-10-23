@@ -1,9 +1,12 @@
+"use client";
 import Link from "next/link";
 import React from "react";
 import { HeartIcon, Search, ShoppingBag, User } from "lucide-react";
 import HeaderBottom from "./Header-bottom";
+import useUser from "@/hooks/useUser";
 
 const Header = () => {
+  const { user, isLoading } = useUser();
   return (
     <div className="w-full bg-white">
       <div className="w-[80%] py-5 m-auto flex items-center justify-between">
@@ -24,16 +27,37 @@ const Header = () => {
         </div>
         <div className="flex items-center gap-8">
           <div className="flex items-center gap-2">
-            <Link
-              href="/login"
-              className="flex items-center cursor-pointer rounded-full border-gray-300 border-2 w-[50px] h-[50px] justify-center"
-            >
-              <User />
-            </Link>
-            <Link href="/login" className="flex items-center flex-col">
-              <div className="block font-medium">Hello,</div>
-              <div className="font-semibold">Sign In</div>
-            </Link>
+            {!isLoading && user ? (
+              <>
+                <Link
+                  href="/profile"
+                  className="flex items-center cursor-pointer rounded-full border-gray-300 border-2 w-[50px] h-[50px] justify-center"
+                >
+                  <User />
+                </Link>
+                <Link href="/profile" className="flex items-center flex-col">
+                  <div className="block font-medium">Hello,</div>
+                  <div className="font-semibold">
+                    {user?.name?.split(" ")[0]}
+                  </div>
+                </Link>
+              </>
+            ) : (
+              <>
+                <Link
+                  href="/login"
+                  className="flex items-center cursor-pointer rounded-full border-gray-300 border-2 w-[50px] h-[50px] justify-center"
+                >
+                  <User />
+                </Link>
+                <Link href="/login" className="flex items-center flex-col">
+                  <div className="block font-medium">Hello,</div>
+                  <div className="font-semibold">
+                    {isLoading ? "..." : "Sign In"}
+                  </div>
+                </Link>
+              </>
+            )}
           </div>
           <div className="flex items-center gap-5">
             <Link href="/wishlist" className="relative">
