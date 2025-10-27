@@ -1,5 +1,4 @@
 import axios from "axios";
-import { response } from "express";
 
 const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
 
@@ -37,7 +36,7 @@ axiosInstance.interceptors.request.use(
 axiosInstance.interceptors.response.use(
   (response) => response,
   async (error) => {
-    const originalRequest = error.config();
+    const originalRequest = error.config;
 
     if (error.response?.status === 401 && !originalRequest._retry) {
       if (isRefreshing) {
@@ -49,7 +48,7 @@ axiosInstance.interceptors.response.use(
       isRefreshing = true;
       try {
         await axios.post(
-          `${backendUrl}/api/refresh-token-user`,
+          `${backendUrl}/api/refresh-token`,
           {},
           { withCredentials: true }
         );

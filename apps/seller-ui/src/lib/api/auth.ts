@@ -22,6 +22,12 @@ type CreateShopParams = {
   category: string;
   sellerId: string;
 };
+
+type SellerLogIn = {
+  email: string;
+  password: string;
+};
+
 export const sellerRegistration = async (data: RegistrationParams) => {
   const response = await axiosInstance.post("/api/seller-registration", data);
   return response.data;
@@ -37,5 +43,10 @@ export const verifySeller = async ({ data, otp }: VerifyParams) => {
 
 export const createShop = async (data: CreateShopParams) => {
   const response = await axiosInstance.post("/api/create-shop", data);
+  return response.data;
+};
+
+export const sellerLogin = async (data: SellerLogIn) => {
+  const response = await axiosInstance.post("/api/login-seller", data);
   return response.data;
 };

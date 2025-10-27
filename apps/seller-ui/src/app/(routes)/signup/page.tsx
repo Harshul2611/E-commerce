@@ -7,7 +7,6 @@ import { useMutation } from "@tanstack/react-query";
 import { AxiosError } from "axios";
 import { Eye, EyeOff } from "lucide-react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import React, { useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 
@@ -29,7 +28,6 @@ const Login = () => {
   const [sellerData, setSellerData] = useState<FormData | null>(null);
   const [sellerId, setSellerId] = useState("");
   const inputRefs = useRef<(HTMLInputElement | null)[]>([]);
-  const router = useRouter();
 
   const {
     register,

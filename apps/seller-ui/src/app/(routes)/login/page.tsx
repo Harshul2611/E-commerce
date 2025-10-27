@@ -1,4 +1,5 @@
 "use client";
+import { sellerLogin } from "@/lib/api/auth";
 import { useMutation } from "@tanstack/react-query";
 import { AxiosError } from "axios";
 import { Eye, EyeOff } from "lucide-react";
@@ -19,10 +20,10 @@ const Login = () => {
   const router = useRouter();
 
   const loginFormMutation = useMutation({
-    mutationFn: UserLogin,
+    mutationFn: sellerLogin,
     onSuccess: (data) => {
       setServerError(null);
-      router.push("/");
+      router.push("/dashboard");
     },
     onError: (error: AxiosError) => {
       const errorMessage =

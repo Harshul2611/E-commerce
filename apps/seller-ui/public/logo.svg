@@ -1,0 +1,12 @@
+<svg
+      width="24"
+      height="24"
+      viewBox="0 0 80 80"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      {/* Bright cyan color */}
+      <path
+        d="M20 20h40l-6 30H26l-6-30zm12 34a5 5 0 1 0 0 10 5 5 0 0 0 0-10zm20 0a5 5 0 1 0 0 10 5 5 0 0 0 0-10z"
+        fill="#74d089ff" 
+      />
+    </svg>
