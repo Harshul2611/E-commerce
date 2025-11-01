@@ -25,14 +25,14 @@ const Input = forwardRef<HTMLInputElement | HTMLTextAreaElement, Props>(
         {type === "textarea" ? (
           <textarea
             ref={ref as React.Ref<HTMLTextAreaElement>}
-            className={`w-full !border !outline-none bg-transparent bg-gray-700 p-2 rounded-md text-white ${className}`}
+            className={`w-full !border !outline-none bg-transparent border-gray-700 p-2 rounded-md text-white ${className}`}
             {...(props as TextAreaProps)}
           />
         ) : (
           <input
             type={type}
             ref={ref as React.Ref<HTMLInputElement>}
-            className={`w-full !border !outline-none bg-transparent bg-gray-700 p-2 rounded-md text-white ${className}`}
+            className={`w-full !border !outline-none bg-transparent border-gray-700 p-2 rounded-md text-white ${className}`}
             {...(props as InputProps)}
           />
         )}

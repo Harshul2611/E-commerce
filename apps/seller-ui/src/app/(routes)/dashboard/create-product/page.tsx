@@ -1,4 +1,5 @@
 "use client";
+import dynamic from "next/dynamic";
 import ImagePlaceholder from "@/shared/components/image-placeholder";
 import { ChevronRight } from "lucide-react";
 import React, { useMemo, useState } from "react";
@@ -9,6 +10,15 @@ import CustomSpecification from "../../../../../../../packages/components/custom
 import CustomProperties from "../../../../../../../packages/components/custom-properties";
 import { useQuery } from "@tanstack/react-query";
 import axiosInstance from "@/lib/axiosInstance";
+import SizeSelector from "../../../../../../../packages/components/size-selector";
+
+const RichTextEditor = dynamic(
+  () =>
+    import("../../../../../../../packages/components/rich-text-editor").then(
+      (mod) => mod.default
+    ),
+  { ssr: false }
+);
 
 const CreateProduct = () => {
   const {
@@ -21,7 +31,7 @@ const CreateProduct = () => {
   } = useForm();
 
   const [openImageModal, setOpenImageModal] = useState(false);
-  const [isChanged, setIsChanged] = useState(false);
+  const [isChanged, setIsChanged] = useState(true);
   const [images, setImages] = useState<(File | null)[]>([null]);
   const [loading, setLoading] = useState(false);
 
@@ -83,6 +93,8 @@ const CreateProduct = () => {
     });
     setValue("images", images);
   };
+
+  const handleSaveDraft = async () => {};
 
   return (
     <form
@@ -334,9 +346,151 @@ const CreateProduct = () => {
                   </p>
                 )}
               </div>
+              <div className="mt-4">
+                <label className="block font-semibold text-gray-300 mb-1">
+                  Detailed Description (Min 100 words)
+                </label>
+              </div>
+              <div className="mt-4">
+                <Input
+                  label="Video URL"
+                  placeholder="https://youtube.com/embed/xyz"
+                  {...register("video_url", {
+                    pattern: {
+                      value:
+                        /^https:\/\/(www\.)?youtube\.com\/embed\/[a-zA-Z0-9_-]+$/,
+                      message: "Invalid youtube URL!",
+                    },
+                  })}
+                />
+                {errors.video_url && (
+                  <p className="text-red-500 text-xs mt-1">
+                    {errors.video_url.message as string}
+                  </p>
+                )}
+              </div>
+              <div className="mt-4">
+                <Controller
+                  name="detailed_description"
+                  control={control}
+                  rules={{
+                    required: "Detailed Description is required",
+                    validate: (value) => {
+                      const wordCount = value
+                        ?.split(/\s+/)
+                        .filter((word: string) => word).length;
+                      return (
+                        wordCount <= 100 ||
+                        "Description must be atleast 100 words!"
+                      );
+                    },
+                  }}
+                  render={({ field }) => (
+                    <RichTextEditor
+                      value={field.value}
+                      onChange={field.onChange}
+                    />
+                  )}
+                />
+                {errors.detailed_description && (
+                  <p className="text-red-500 text-xs mt-1">
+                    {errors.detailed_description.message as string}
+                  </p>
+                )}
+              </div>
+              <div className="mt-4">
+                <Input
+                  label="Regular Price"
+                  placeholder="$20"
+                  {...register("regular_price", {
+                    valueAsNumber: true,
+                    min: { value: 1, message: "Price must be at least 1$" },
+                    validate: (value) =>
+                      !isNaN(value) || "Only numbers are allowed",
+                  })}
+                />
+                {errors.regular_price && (
+                  <p className="text-red-500 text-xs mt-1">
+                    {errors.regular_price.message as string}
+                  </p>
+                )}
+              </div>
+              <div className="mt-4">
+                <Input
+                  label="Sale Price"
+                  placeholder="$15"
+                  {...register("sale_price", {
+                    required: "Sale price is required",
+                    valueAsNumber: true,
+                    min: { value: 1, message: "Sale price must be atleast 1" },
+                    validate: (value) => {
+                      if (isNaN(value)) return "Only numbers are allowed";
+                      if (regularPrice && value >= regularPrice) {
+                        return "Sale price must be less then regular price";
+                      }
+                      return true;
+                    },
+                  })}
+                />
+                {errors.sale_price && (
+                  <p className="text-red-500 text-xs mt-1">
+                    {errors.sale_price.message as string}
+                  </p>
+                )}
+              </div>
+              <div className="mt-4">
+                <Input
+                  label="Stock"
+                  placeholder="100"
+                  {...register("stock", {
+                    required: "Stock is required",
+                    valueAsNumber: true,
+                    min: { value: 1, message: "Stock must be atleast 1" },
+                    max: { value: 1000, message: "Stock cannot exceed 1000" },
+                    validate: (value) => {
+                      if (isNaN(value)) return "Only numbers are allowed";
+                      if (!Number.isInteger(value)) {
+                        return "Stock must be a whole number";
+                      }
+                      return true;
+                    },
+                  })}
+                />
+                {errors.stock && (
+                  <p className="text-red-500 text-xs mt-1">
+                    {errors.stock.message as string}
+                  </p>
+                )}
+              </div>
+              <div className="mt-4">
+                <SizeSelector control={control} errors={errors} />
+              </div>
+              <div className="mt-5">
+                <label className="block font-semibold text-gray-300 mb-1">
+                  Select Discount Codes (Optional)
+                </label>
+              </div>
             </div>
           </div>
         </div>
+      </div>
+      <div className="mt-6 flex justify-end gap-3">
+        {isChanged && (
+          <button
+            type="button"
+            onClick={handleSaveDraft}
+            className="px-4 py-2 bg-gray-700 text-white rounded-md"
+          >
+            Save Draft
+          </button>
+        )}
+        <button
+          type="submit"
+          disabled={loading}
+          className="px-4 py-2 bg-blue-600 text-white rounded-md"
+        >
+          {loading ? "Creating..." : "Create"}
+        </button>
       </div>
     </form>
   );
