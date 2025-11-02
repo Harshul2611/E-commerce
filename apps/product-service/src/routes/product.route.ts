@@ -1,9 +1,12 @@
 import { Router } from "express";
 import {
   createDiscountCodes,
+  createProduct,
   deleteDiscountCodes,
+  deleteProductImage,
   getCategories,
   getDiscountCodes,
+  uploadProductImage,
 } from "../controllers/product.controller";
 import isAuthenticated from "../../../../packages/middleware/isAuthenticated";
 
@@ -17,5 +20,8 @@ router.delete(
   isAuthenticated,
   deleteDiscountCodes
 );
+router.post("/upload-product-image", isAuthenticated, uploadProductImage);
+router.delete("/delete-product-image", isAuthenticated, deleteProductImage);
+router.post("/create-product", isAuthenticated, createProduct);
 
 export default router;

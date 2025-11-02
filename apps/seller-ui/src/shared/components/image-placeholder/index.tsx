@@ -7,16 +7,22 @@ const ImagePlaceholder = ({
   small,
   onImageChange,
   onRemove,
+  pictureUploadingLoader,
   defaultImage = null,
   index = null,
+  setSelectedImage,
   setOpenImageModal,
+  images,
 }: {
   size: string;
   small?: boolean;
   onImageChange: (file: File | null, index: number) => void;
   onRemove: (index: number) => void;
   defaultImage?: string | null;
+  pictureUploadingLoader: boolean;
   index?: any;
+  images: any;
+  setSelectedImage: (e: string) => void;
   setOpenImageModal: (openImageModal: boolean) => void;
 }) => {
   const [imagePreview, setImagePreview] = useState<string | null>(defaultImage);
@@ -45,14 +51,19 @@ const ImagePlaceholder = ({
         <>
           <button
             type="button"
+            disabled={pictureUploadingLoader}
             onClick={() => onRemove?.(index!)}
             className="absolute top-3 right-3 p-2 !rounded bg-red-600 shadow-lg"
           >
             <X size={16} />
           </button>
           <button
+            disabled={pictureUploadingLoader}
             className="absolute top-3 right-[70px] p-2 !rounded bg-blue-500 shadow-lg cursor-pointer"
-            onClick={() => setOpenImageModal(true)}
+            onClick={() => {
+              setOpenImageModal(true);
+              setSelectedImage(images[index].file_url);
+            }}
           >
             <WandSparkles size={16} />
           </button>

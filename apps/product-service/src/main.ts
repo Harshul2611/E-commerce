@@ -18,7 +18,7 @@ const port = process.env.PORT || 6002;
 
 const app = express();
 
-app.use(express.json());
+app.use(express.json({ limit: "100mb" }));
 
 app.use(cookieParser());
 
