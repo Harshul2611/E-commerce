@@ -11,6 +11,7 @@
   },
   "private": true,
   "dependencies": {
+    "@ant-design/icons": "^6.1.0",
     "@imagekit/nodejs": "^7.1.1",
     "@prisma/client": "^6.17.1",
     "@tanstack/react-query": "^5.90.5",
