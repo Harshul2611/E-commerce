@@ -10,10 +10,13 @@ import {
 import { navItems, NavItemsTypes } from "@/configs/Constants";
 import Link from "next/link";
 import useUser from "@/hooks/useUser";
+import { useStore } from "@/store";
 
 const HeaderBottom = () => {
   const [show, setShow] = useState(false);
   const [isSticky, setIsSticky] = useState(false);
+  const wishlist = useStore((state: any) => state.wishlist);
+  const cart = useStore((state: any) => state.cart);
   const { user, isLoading } = useUser();
 
   useEffect(() => {
@@ -122,13 +125,17 @@ const HeaderBottom = () => {
                 <Link href="/wishlist" className="relative">
                   <HeartIcon />
                   <div className="w-6 h-6 rounded-full flex items-center justify-center bg-red-500 absolute border-white top-[-10px] right-[-10px]">
-                    <span className="text-white font-medium text-xs">0</span>
+                    <span className="text-white font-medium text-xs">
+                      {wishlist?.length}
+                    </span>
                   </div>
                 </Link>
                 <Link href="/cart" className="relative">
                   <ShoppingBag />
                   <div className="absolute w-6 h-6 bg-red-500 rounded-full top-[-10px] right-[-10px] border-white flex items-center justify-center">
-                    <span className="text-white font-medium text-xs">0</span>
+                    <span className="text-white font-medium text-xs">
+                      {cart?.length}
+                    </span>
                   </div>
                 </Link>
               </div>

@@ -28,6 +28,7 @@
     "ioredis": "^5.8.1",
     "jotai": "^2.15.0",
     "jsonwebtoken": "^9.0.2",
+    "kafkajs": "^2.2.4",
     "lucide-react": "^0.546.0",
     "morgan": "^1.10.1",
     "next": "~15.2.4",
@@ -43,7 +44,9 @@
     "stripe": "^19.1.0",
     "styled-components": "^6.1.19",
     "swagger-autogen": "^2.23.7",
-    "swagger-ui-express": "^5.0.1"
+    "swagger-ui-express": "^5.0.1",
+    "ua-parser-js": "^2.0.6",
+    "zustand": "^5.0.8"
   },
   "devDependencies": {
     "@nx/docker": "21.6.4",

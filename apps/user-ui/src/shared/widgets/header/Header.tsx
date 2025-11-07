@@ -4,9 +4,12 @@ import React from "react";
 import { HeartIcon, Search, ShoppingBag, User } from "lucide-react";
 import HeaderBottom from "./Header-bottom";
 import useUser from "@/hooks/useUser";
+import { useStore } from "@/store";
 
 const Header = () => {
   const { user, isLoading } = useUser();
+  const wishlist = useStore((state: any) => state.wishlist);
+  const cart = useStore((state: any) => state.cart);
   return (
     <div className="w-full bg-white">
       <div className="w-[80%] py-5 m-auto flex items-center justify-between">
@@ -63,13 +66,17 @@ const Header = () => {
             <Link href="/wishlist" className="relative">
               <HeartIcon />
               <div className="w-6 h-6 rounded-full flex items-center justify-center bg-red-500 absolute border-white top-[-10px] right-[-10px]">
-                <span className="text-white font-medium text-xs">0</span>
+                <span className="text-white font-medium text-xs">
+                  {wishlist?.length}
+                </span>
               </div>
             </Link>
             <Link href="/cart" className="relative">
               <ShoppingBag />
               <div className="absolute w-6 h-6 bg-red-500 rounded-full top-[-10px] right-[-10px] border-white flex items-center justify-center">
-                <span className="text-white font-medium text-xs">0</span>
+                <span className="text-white font-medium text-xs">
+                  {cart?.length}
+                </span>
               </div>
             </Link>
           </div>
